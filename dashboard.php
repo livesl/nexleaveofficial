@@ -218,8 +218,8 @@ and open the template in the editor.
                         <div  class="form-group"  >
                             <label for="username">Assign Person:</label> 
                             <select  class="form-control" id="assignperson" name="assignperson" ng-model="AP"  ng-options ="AP.name for AP in people track by AP.name  "  >
-                                <option>--Select--</option>
-                                <option value="AP.name">--Select--</option>
+                                <option value="" selected="">Select</option>
+<!--                                <option value="AP.name">--Select--</option>-->
 
 
 
@@ -233,7 +233,7 @@ and open the template in the editor.
                             <label for="username">Date(From):</label> 
                             <input type="text" class="form-control" id="datepickerfrom" name="datepickerfrom" placeholder="Click here" >
                             <div class="checkbox">
-                                <label> <input type="checkbox" value="1"   id="halftime" name="halftime"/> Half Day Only</label>
+                                <label> <input type="checkbox" value=""   id="halftime" name="halftime"/> Half Day Only</label>
                             </div>
 
                         </div>
@@ -396,25 +396,37 @@ and open the template in the editor.
 
                                         $("#btn_applyleave").click(function (){
 
-                                        reason = $("#reason").val();
+                                reason = $("#reason").val();
                                         assignperson = $("#assignperson").val();
                                         datepickerfrom = $("#datepickerfrom").val();
-                                        halftime = $("#halftime").val();
-                                        datepickerto = $("#datepickerto").val();
+//                                        halftime = $("#halftime").val();
+                                        halftime = $("#halftime").prop('checked');
+                                        if (halftime == true){
+                                halftime = "1";
+//                                        alert("1");
+                                } else{
+                                halftime = "0";
+//                                        alert("0");
+                                }
+                                datepickerto = $("#datepickerto").val();
                                         $.ajax({
-                                                type: 'POST',
+                                        type: 'POST',
                                                 url: "php/apply_leave.php",
                                                 data: {reason, assignperson, datepickerfrom, halftime, datepickerto},
                                                 success: function (data) {
-
-                                                if (data == 1) {
-                                                alert("Data Saved!");
+                                                    alert(data);
+                                                    if(data==1){
+                                                         alert("Data Saved!");
                                                         window.location = "dashboard.php";
-                                                } else {
-                                                alert("Unsuccessfully!");
-                                                }
+                                                        
+                                                    }else{
+                                                         alert("Error!");
+                                                        
+                                                    }
+//                                                    alert("Data Saved!");
+//                                                        window.location = "dashboard.php";
 
-
+//                                               
                                                 }
 
 
