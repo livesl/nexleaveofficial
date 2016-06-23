@@ -70,7 +70,7 @@ and open the template in the editor.
                                     </li>
                                     <li><a href="#">Settings</a></li> 
 
-                                    <li><a href="#">Reports</a></li> 
+                                    <li><a href="#view_apply_leave_admin" id="click_view_leaveapply">View</a></li> 
 
                                     <li><a href="index">Sign Out</a></li> 
 
@@ -219,7 +219,7 @@ and open the template in the editor.
                             <label for="username">Assign Person:</label> 
                             <select  class="form-control" id="assignperson" name="assignperson" ng-model="AP"  ng-options ="AP.name for AP in people track by AP.name  "  >
                                 <option value="" selected="">Select</option>
-<!--                                <option value="AP.name">--Select--</option>-->
+                                <!--                                <option value="AP.name">--Select--</option>-->
 
 
 
@@ -256,15 +256,80 @@ and open the template in the editor.
         </div>
 
 
-
-
-
-
-
-
-
-
         <!--///////////////////////////////////////////Apply leave- end////////////////////////////////////////////////////-->
+        <!--///////////////////////////////////////////view Apply leave admin- start////////////////////////////////////////////////////-->
+
+        <div class="jumbotron" ng-app="myApp" id="view_apply_leave_admin">
+            <div class="container ">
+                <div class="row" ng-controller="viewdetails">
+                    <!--////////code-->
+                    <table class="table table-striped " id="tblview" >
+
+
+
+                        <tr>
+                            <th>
+                                #
+
+                            </th>
+                            <th>
+                                Name
+
+                            </th>
+                            <th>
+                                Assign Name
+
+                            </th>
+
+                            <th >
+                                Reason
+
+                            </th>
+                            <th>
+                                Leave Date(From)
+
+                            </th>
+
+                            <th>
+                                Leave Date(to)
+
+                            </th>
+                            <th>
+                                Status
+
+                            </th>
+                            <th>
+                                Admin Status
+
+                            </th>
+
+                        </tr>
+                        <tr ng-repeat=" x in views1" >
+<!--                           <td ng-if="$odd" style="background-color:#f1f1f1">-->
+                            <td>{{x.id}}</td>
+                            <td>{{x.username}}</td>
+                            <td>{{x.assigname}}</td>
+                            <td>{{x.reason}}</td>
+                            <td>{{x.leavedate_from}}</td>
+                            <td >{{x.leavedate_to}}</td>
+                            <td>{{x.status}}</td>
+
+                            <td><button type="button" class="btn btn-primary" ng-click="changeStatus(x.id)" >Approve</button> </td>
+
+                        </tr>
+
+
+                    </table>
+
+
+
+                    <div  class="col-sm-3 "></div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--///////////////////////////////////////////view Apply leave admin- end////////////////////////////////////////////////////-->
 
 
 
@@ -293,8 +358,10 @@ and open the template in the editor.
                                         $(document).ready(function () {
                                 $("#register").hide();
                                         $("#applyleave_part").hide();
+                                        $("#view_apply_leave_admin").hide();
                                         clickRegister();
                                         clickApplyleave();
+                                        clickViewapplyadmin();
                                         upload();
                                 });
                                         $(function () {
@@ -323,6 +390,15 @@ and open the template in the editor.
                                 $("#clickregister").click(function () {
                                 $("#register").slideDown();
                                         $("#applyleave_part").hide();
+                                        $("#view_apply_leave_admin").hide();
+                                });
+                                }
+
+                                function clickViewapplyadmin(){
+                                $("#click_view_leaveapply").click(function (){
+                                     $("#register").hide();
+                                      $("#applyleave_part").hide();
+                                $("#view_apply_leave_admin").slideDown();
                                 });
                                 }
 
@@ -330,6 +406,7 @@ and open the template in the editor.
                                 $("#applyleave").click(function () {
                                 $("#applyleave_part").slideDown();
                                         $("#register").hide();
+                                        $("#view_apply_leave_admin").hide();
                                 });
                                 }
 
@@ -414,15 +491,13 @@ and open the template in the editor.
                                                 url: "php/apply_leave.php",
                                                 data: {reason, assignperson, datepickerfrom, halftime, datepickerto},
                                                 success: function (data) {
-                                                    alert(data);
-                                                    if(data==1){
-                                                         alert("Data Saved!");
+                                                alert(data);
+                                                        if (data == 1){
+                                                alert("Data Saved!");
                                                         window.location = "dashboard.php";
-                                                        
-                                                    }else{
-                                                         alert("Error!");
-                                                        
-                                                    }
+                                                } else{
+                                                alert("Error!");
+                                                }
 //                                                    alert("Data Saved!");
 //                                                        window.location = "dashboard.php";
 
