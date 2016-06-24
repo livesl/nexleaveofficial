@@ -5,7 +5,7 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <?php session_start(); ?>
-<html>
+<html >
     <head>
         <link href="js/boostrap/bootstrap.min.js" />
         <link rel="stylesheet" href="js/libs/bootstrap-modal/bootstrap-modal.css" type="text/css"/>
@@ -22,7 +22,7 @@ and open the template in the editor.
         <title>Nex Leave Application</title>
 
     </head>
-    <body>
+    <body ng-app="myApp">
 
         <div class="credits text-center">
             <h1>
@@ -199,7 +199,7 @@ and open the template in the editor.
 
         <!--//////////////////////////////Apply leave - start/////////////////////////////////////////////////////////////////-->
 
-        <div class="jumbotron"   ng-app="myApp" ng-controller="decontroller" id="applyleave_part">
+        <div class="jumbotron" ng-app="myApp"   ng-controller="decontroller" id="applyleave_part">
             <div class="container ">
                 <div class="row">
                     <div  class="col-sm-4 "></div>
@@ -259,9 +259,9 @@ and open the template in the editor.
         <!--///////////////////////////////////////////Apply leave- end////////////////////////////////////////////////////-->
         <!--///////////////////////////////////////////view Apply leave admin- start////////////////////////////////////////////////////-->
 
-        <div class="jumbotron" ng-app="myApp" id="view_apply_leave_admin">
+        <div class="jumbotron" id="view_apply_leave_admin">
             <div class="container ">
-                <div class="row" ng-controller="viewdetails">
+                <div class="row" ng-app="myApp" ng-controller="viewdetails">
                     <!--////////code-->
                     <table class="table table-striped " id="tblview" >
 
@@ -307,15 +307,19 @@ and open the template in the editor.
                         <tr ng-repeat=" x in views1" >
 <!--                           <td ng-if="$odd" style="background-color:#f1f1f1">-->
                             <td>{{x.id}}</td>
-                            <td>{{x.username}}</td>
-                            <td>{{x.assigname}}</td>
+                            <td>{{x.name}}</td>
+                            <td>{{x.assign_person_name}}</td>
                             <td>{{x.reason}}</td>
                             <td>{{x.leavedate_from}}</td>
                             <td >{{x.leavedate_to}}</td>
-                            <td>{{x.status}}</td>
-
-                            <td><button type="button" class="btn btn-primary" ng-click="changeStatus(x.id)" >Approve</button> </td>
-
+                            
+                            <td >{{x.status}}</td>
+                            
+                           
+                            
+                            <td><button type="button"  class="btn {{x.status=='Pending'? 'btn-danger':'btn-success'}} " ng-click="changeStatus(x.id)" >Approve</button> </td>
+                           
+                         
                         </tr>
 
 
@@ -396,9 +400,9 @@ and open the template in the editor.
 
                                 function clickViewapplyadmin(){
                                 $("#click_view_leaveapply").click(function (){
-                                     $("#register").hide();
-                                      $("#applyleave_part").hide();
-                                $("#view_apply_leave_admin").slideDown();
+                                $("#register").hide();
+                                        $("#applyleave_part").hide();
+                                        $("#view_apply_leave_admin").slideDown();
                                 });
                                 }
 
@@ -515,14 +519,50 @@ and open the template in the editor.
 
                                         $scope.people = [];
                                                 $http.get("php/load_user_name.php").success(function (result) {
-
                                         $scope.people = result;
-                                                // alert(result);
-//            $scope.people = result[];
-//              alert(result);
+                                        });
+                                        });
+/////////////////////////////////////////////////////////////////////////////////////////
+                                        app.controller('viewdetails', function ($scope, $http) {
+                                        $scope.loadData = function () {
+
+                                        $http.get("php/view_leaveapply_admin.php").success(function (response) {
+                                        $scope.views1 = response;
+                                                //alert(response);
+                                                console.log(response);
+                                        });
+                                        };
+                                         $scope.loadData();
+
+
+                                        $scope.changeStatus = function (x) {
+                                        $.ajax({
+                                        type: 'POST',
+                                                url: "php/changeStatusApprove.php",
+                                                data: {id: x},
+                                                success: function (data) {
+                                                alert("Approved");
+                                                 $scope.loadData();
+                                                }
+
+
 
                                         });
+                                                $.ajax({
+                                                type: 'POST',
+                                                        url: "php/sendmail.php",
+                                                        data: {},
+                                                        success: function (data) {
+                                                        //
+                                                        }
+
+
+
+                                                });
+                                        };
                                         });
+////                                                };
+//                                        });
 ///////////////////////////////////////load names-end//////////////////////////////////////////////////////
 
         </script>
