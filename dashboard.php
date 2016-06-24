@@ -63,15 +63,16 @@ and open the template in the editor.
                                         <ul class="dropdown-menu">
                                             <li><a href="#apply_leave" id="applyleave">Apply Leave</a></li>
                                             <li><a href="#register" id="clickregister" >Register</a></li>
-                                            <li><a href="">My Leaves</a></li>
+                                            <li><a href="#my_leaves" id="click_myleaves">My Leaves</a></li>
 
                                             <!--<li><a href="#">Page 1-3</a></li>--> 
                                         </ul>
                                     </li>
                                     <li><a href="#">Settings</a></li> 
-
-                                    <li><a href="#view_apply_leave_admin" id="click_view_leaveapply">View</a></li> 
-
+                                    <?php 
+                                    if($_SESSION['uName']== "admin"){?>
+                                    <li><a href="#view_apply_leave_admin" id="click_view_leaveapply">View for Admin</a></li> 
+                                    <?php }?>
                                     <li><a href="index">Sign Out</a></li> 
 
                                 </ul>
@@ -312,14 +313,18 @@ and open the template in the editor.
                             <td>{{x.reason}}</td>
                             <td>{{x.leavedate_from}}</td>
                             <td >{{x.leavedate_to}}</td>
-                            
+
                             <td >{{x.status}}</td>
-                            
-                           
-                            
+
+
+
                             <td><button type="button"  class="btn {{x.status=='Pending'? 'btn-danger':'btn-success'}} " ng-click="changeStatus(x.id)" >Approve</button> </td>
-                           
-                         
+
+
+
+
+
+
                         </tr>
 
 
@@ -334,6 +339,77 @@ and open the template in the editor.
 
 
         <!--///////////////////////////////////////////view Apply leave admin- end////////////////////////////////////////////////////-->
+
+
+        <!--///////////////////////////////////////////view Apply leave my- start////////////////////////////////////////////////////-->
+
+        <div class="jumbotron" id="view_apply_leave_my">
+            <div class="container ">
+                <div class="row" ng-app="myApp" ng-controller="viewdetailsmy">
+                    <!--                    ////////code-->
+                    <table class="table table-striped " id="tblviewmy" >
+
+
+
+                        <tr>
+                            <th>
+                                #
+
+                            </th>
+
+                            <th>
+                                Assign Name
+
+                            </th>
+
+                            <th >
+                                Reason
+
+                            </th>
+                            <th>
+                                Leave Date(From)
+
+                            </th>
+
+                            <th>
+                                Leave Date(to)
+
+                            </th>
+                            <th>
+                                Status
+
+                            </th>
+
+
+                        </tr>
+                        <tr ng-repeat=" x in views2" >
+<!--                            <td ng-if="$odd" style="background-color:#f1f1f1">-->
+                            <td>{{x.id}}</td>
+                            <td>{{x.assign_person_name}}</td>
+                            <td>{{x.reason}}</td>
+                            <td>{{x.leavedate_from}}</td>
+                            <td >{{x.leavedate_to}}</td>
+
+
+                            <td><button type="button"  class="btn {{x.status=='Pending'? 'btn-danger':'btn-success'}} " ng-click="show_rights_alerts()">Status</button> </td>
+
+
+                        </tr>
+
+
+                    </table>
+
+
+
+                    <div  class="col-sm-3 "></div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--///////////////////////////////////////////view Apply leave my- end////////////////////////////////////////////////////-->
+
+
 
 
 
@@ -363,9 +439,11 @@ and open the template in the editor.
                                 $("#register").hide();
                                         $("#applyleave_part").hide();
                                         $("#view_apply_leave_admin").hide();
+                                        $("#view_apply_leave_my").hide();
                                         clickRegister();
                                         clickApplyleave();
                                         clickViewapplyadmin();
+                                        click_myleaves();
                                         upload();
                                 });
                                         $(function () {
@@ -392,25 +470,41 @@ and open the template in the editor.
 
                                 function clickRegister() {
                                 $("#clickregister").click(function () {
-                                $("#register").slideDown();
+                               
                                         $("#applyleave_part").hide();
                                         $("#view_apply_leave_admin").hide();
+                                        $("#view_apply_leave_my").hide();
+                                        $("#register").slideDown();
+                                        
                                 });
                                 }
 
                                 function clickViewapplyadmin(){
                                 $("#click_view_leaveapply").click(function (){
-                                $("#register").hide();
+                                        $("#register").hide();
                                         $("#applyleave_part").hide();
+                                        $("#view_apply_leave_my").hide();
                                         $("#view_apply_leave_admin").slideDown();
+                                        
                                 });
                                 }
 
                                 function clickApplyleave() {
                                 $("#applyleave").click(function () {
-                                $("#applyleave_part").slideDown();
+                                        $("#applyleave_part").slideDown();
+                                        $("#view_apply_leave_my").hide();
                                         $("#register").hide();
                                         $("#view_apply_leave_admin").hide();
+                                });
+                                }
+
+                                function click_myleaves(){
+                                $("#click_myleaves").click(function () {
+                                        $("#view_apply_leave_my").slideDown();
+                                        $("#register").hide();
+                                        $("#view_apply_leave_admin").hide();
+                                        $("#applyleave_part").hide();
+                                      
                                 });
                                 }
 
@@ -522,7 +616,9 @@ and open the template in the editor.
                                         $scope.people = result;
                                         });
                                         });
-/////////////////////////////////////////////////////////////////////////////////////////
+                                        
+                                        ///////////////////////////////////////load names-end//////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////view details admin- start////////////////////////////
                                         app.controller('viewdetails', function ($scope, $http) {
                                         $scope.loadData = function () {
 
@@ -532,9 +628,10 @@ and open the template in the editor.
                                                 console.log(response);
                                         });
                                         };
-                                         $scope.loadData();
-
-
+                                                $scope.loadData();
+                                                $scope.show_rights_alerts = function(){
+                                                alert("You have no rights for this!");
+                                                }
                                         $scope.changeStatus = function (x) {
                                         $.ajax({
                                         type: 'POST',
@@ -542,7 +639,7 @@ and open the template in the editor.
                                                 data: {id: x},
                                                 success: function (data) {
                                                 alert("Approved");
-                                                 $scope.loadData();
+                                                        $scope.loadData();
                                                 }
 
 
@@ -561,9 +658,31 @@ and open the template in the editor.
                                                 });
                                         };
                                         });
+                                        
+                         ////////////////////////////////////////end///////////////////////////////////////////        
+                         
+                         ///////////////////////////////////////view my leave-start//////////////////////////////////////////////////
+                        app.controller('viewdetailsmy', function ($scope, $http) {
+                                        $scope.loadData = function () {
+
+                                        $http.get("php/view_leaveapply_my.php").success(function (response) {
+                                        $scope.views2 = response;
+                                                //alert(response);
+                                                console.log(response);
+                                        });
+                                        };
+                                                $scope.loadData();
+                                                $scope.show_rights_alerts = function(){
+                                                alert("You have no rights for this!");
+                                                }
+                                       
+                                        });
+                                        
+                         ///////////////////////////////////////view my leave-end//////////////////////////////////////////////////
+                                        
 ////                                                };
 //                                        });
-///////////////////////////////////////load names-end//////////////////////////////////////////////////////
+
 
         </script>
 
