@@ -18,7 +18,7 @@ and open the template in the editor.
         <!--// <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />-->
 
         <meta charset="UTF-8">
-        <title>Nex Leave Application</title>
+        <title>Leave Application System</title>
 
     </head>
     <body>
@@ -128,14 +128,7 @@ and open the template in the editor.
         </div>
 
 
-        <div class="credits text-center">
-            <p>
-                <a href="#" target="_top">Leave Management Application</a>
-            </p>
-            <p>
-                <a href="#" target="_top">NexSoft.io</a>
-            </p>
-        </div>
+      <?php include './php/footer.php';?>
         <script src="js/boostrap/jquery.min.js" type="text/javascript"></script>
         <script src="js/boostrap/bootstrap.min.js" type="text/javascript"></script>
 

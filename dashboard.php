@@ -413,14 +413,7 @@ and open the template in the editor.
 
 
 
-        <div class="credits text-center">
-            <p>
-                <a href="#" target="_top">Leave Management Application</a>
-            </p>
-            <p>
-                <a href="#" target="_top">NexSoft.io</a>
-            </p>
-        </div>
+       <?php include './php/footer.php';?>
         <script src="js/boostrap/jquery.min.js" type="text/javascript"></script>
         <script src="js/boostrap/bootstrap.min.js" type="text/javascript"></script>
 
