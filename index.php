@@ -14,6 +14,8 @@ and open the template in the editor.
         <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>-->
         <link href="js/boostrap/jquery.min.js" >
         <link type="text/javascript" href="ng/angular.min.js" />
+        <script src="fileinput/fileinput.js"></script>
+        <link type="text/css" href="fileinput/fileinput-style.css" />
 
         <!--// <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />-->
 

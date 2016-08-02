@@ -15,6 +15,10 @@ and open the template in the editor.
         <link href="js/boostrap/jquery.min.js" >
         <link type="text/javascript" href="ng/angular.min.js" />
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+        <script src="fileinput/fileinput.js"></script>
+        <link type="text/css" href="fileinput/fileinput-style.css" />
+        <script src="jquery-ui/jquery-ui.min.js"></script>
+        <link type="text/css" href="jquery-ui/jquery-ui.css" />
 
         <!--// <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />-->
 
@@ -69,10 +73,9 @@ and open the template in the editor.
                                         </ul>
                                     </li>
                                     <li><a href="#">Settings</a></li> 
-                                    <?php 
-                                    if($_SESSION['uName']== "admin"){?>
-                                    <li><a href="#view_apply_leave_admin" id="click_view_leaveapply">View for Admin</a></li> 
-                                    <?php }?>
+                                    <?php if ($_SESSION['uName'] == "admin") { ?>
+                                        <li><a href="#view_apply_leave_admin" id="click_view_leaveapply">View for Admin</a></li> 
+                                    <?php } ?>
                                     <li><a href="index">Sign Out</a></li> 
 
                                 </ul>
@@ -176,8 +179,30 @@ and open the template in the editor.
                             <div class="form-group">
 
                                 <label for="imageuser">Image:</label> 
-                                <input type="file"  id="imageuser" name="imageuser"><br>
-                                <input type="submit" value="upload" id="uploadsubmit" name="uploadsubmit" class="btn btn-danger" />
+<!--                                <input type="file"  id="imageuser" name="imageuser"><br>
+                                <input type="submit" value="upload" id="uploadsubmit" name="uploadsubmit" class="btn btn-danger" />-->
+
+                                <input  data-title="Please Select Product Image " required="" placeholder="200 w x 200 h" type="text" class="form-control " readonly id="filetxt0"  aria-describedby="basic-addon2">
+                                <input type="hidden" name="filename"  />
+
+                                <button type="button" class="btn btn-default" onclick="imageinput('0', 'clr', 200, 200)"  id="clbtn" >
+                                    <span class="glyphicon glyphicon-remove"></span> Clear
+                                </button>
+                                <div id="sbtn" class="btn btn-default" onclick="imageinput('0', 'brow', 200, 200)" >
+                                    <span class="glyphicon glyphicon-folder-open"></span>
+                                    Browse
+                                </div>
+
+                                <div>  
+                                    <img   width="150" alt="no image" style="display:none;" id="fileimg0" />
+
+                                </div>
+
+
+                                <input type="file" accept="image/png, image/jpeg, image/gif" name="file1" id="file0" style="display: none;" />
+
+
+                                <label id="filelbl0"  style="color: red;" ></label>
 
 
                             </div>
@@ -413,7 +438,7 @@ and open the template in the editor.
 
 
 
-       <?php include './php/footer.php';?>
+        <?php include './php/footer.php'; ?>
         <script src="js/boostrap/jquery.min.js" type="text/javascript"></script>
         <script src="js/boostrap/bootstrap.min.js" type="text/javascript"></script>
 
@@ -463,28 +488,26 @@ and open the template in the editor.
 
                                 function clickRegister() {
                                 $("#clickregister").click(function () {
-                               
-                                        $("#applyleave_part").hide();
+
+                                $("#applyleave_part").hide();
                                         $("#view_apply_leave_admin").hide();
                                         $("#view_apply_leave_my").hide();
                                         $("#register").slideDown();
-                                        
                                 });
                                 }
 
                                 function clickViewapplyadmin(){
                                 $("#click_view_leaveapply").click(function (){
-                                        $("#register").hide();
+                                $("#register").hide();
                                         $("#applyleave_part").hide();
                                         $("#view_apply_leave_my").hide();
                                         $("#view_apply_leave_admin").slideDown();
-                                        
                                 });
                                 }
 
                                 function clickApplyleave() {
                                 $("#applyleave").click(function () {
-                                        $("#applyleave_part").slideDown();
+                                $("#applyleave_part").slideDown();
                                         $("#view_apply_leave_my").hide();
                                         $("#register").hide();
                                         $("#view_apply_leave_admin").hide();
@@ -493,11 +516,10 @@ and open the template in the editor.
 
                                 function click_myleaves(){
                                 $("#click_myleaves").click(function () {
-                                        $("#view_apply_leave_my").slideDown();
+                                $("#view_apply_leave_my").slideDown();
                                         $("#register").hide();
                                         $("#view_apply_leave_admin").hide();
                                         $("#applyleave_part").hide();
-                                      
                                 });
                                 }
 
@@ -530,6 +552,7 @@ and open the template in the editor.
 //////////////////////////////////////////////////////////register save-start//////////////////////////////
 
                                         $("#btn_register").click(function () {
+
                                 first = $("#first").val();
                                         last = $("#last").val();
                                         tp = $("#tp").val();
@@ -540,24 +563,60 @@ and open the template in the editor.
                                         eduqlf = $("#eduqlf").val();
                                         proqlf = $("#proqlf").val();
                                         salory = $("#basic_salory").val();
-                                        image_user = $("#imageuser").val();
+                                        var file_data = $("#file0").prop("files")[0]; // Getting the properties of file from file field
+                                        var form_data = new FormData(); // Creating object of FormData class
+                                        form_data.append("file", file_data)              // Appending parameter named file with properties of file_field to form_data
+                                        form_data.append("first", first)                 // Adding extra parameters to form_data
+                                        form_data.append("last", last)
+                                        form_data.append("tp", tp)
+                                        form_data.append("pass", pass)
+                                        form_data.append("passmatch", passmatch)
+                                        form_data.append("nic", nic)
+                                        form_data.append("dob", dob)
+                                        form_data.append("eduqlf", eduqlf)
+                                        form_data.append("proqlf", proqlf)
+                                        form_data.append("salory", salory)
+                                        // Adding extra parameters to form_data
                                         $.ajax({
-                                        type: 'POST',
-//                    url: "php/register.php?action = save_Register",
-                                                url: "php/register.php",
-                                                data: {first, last, tp, pass, passmatch, nic, dob, eduqlf, proqlf, salory, image_user},
+
+
+                                        url: "php/register.php",
+                                                //dataType: 'script',
+                                                cache: false,
+                                                contentType: false,
+                                                processData: false,
+                                                data: form_data, // Setting the data attribute of ajax with file_data
+                                                type: 'post',
                                                 success: function (data) {
-                                                if (data == 1) {
-                                                alert("Data Saved!");
-                                                        window.location = "dashboard.php";
-                                                } else {
-                                                alert("Unsuccessfully!");
+                                                    console.log(data);
+                                                    alert("Data Saved");
+                                                     window.location = "dashboard.php";
+                                                    
                                                 }
 
-                                                }
 
 
                                         });
+//                                        $.ajax({
+//                                        type: 'POST',
+////                    url: "php/register.php?action = save_Register",
+//                                                url: "php/register.php",
+//                                                data: {first, last, tp, pass, passmatch, nic, dob, eduqlf, proqlf, salory, image_user},
+//                                                success: function (data) {
+//                                                if (data == 1) {
+//                                                alert("Data Saved!");
+//                                                        window.location = "dashboard.php";
+//                                                } else {
+//                                                alert("Unsuccessfully!");
+//                                                }
+//
+//                                                }
+//
+//
+//                                        });
+
+
+
                                 });
                                         ///////////////////////////////////////////register save-end//////////////////////////////////////////////////
                                         ///////////////////////////////////////////leave apply save-start//////////////////////////////////////////////////
@@ -609,7 +668,6 @@ and open the template in the editor.
                                         $scope.people = result;
                                         });
                                         });
-                                        
                                         ///////////////////////////////////////load names-end//////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////view details admin- start////////////////////////////
                                         app.controller('viewdetails', function ($scope, $http) {
@@ -651,11 +709,10 @@ and open the template in the editor.
                                                 });
                                         };
                                         });
-                                        
-                         ////////////////////////////////////////end///////////////////////////////////////////        
-                         
-                         ///////////////////////////////////////view my leave-start//////////////////////////////////////////////////
-                        app.controller('viewdetailsmy', function ($scope, $http) {
+                                        ////////////////////////////////////////end///////////////////////////////////////////        
+
+                                        ///////////////////////////////////////view my leave-start//////////////////////////////////////////////////
+                                        app.controller('viewdetailsmy', function ($scope, $http) {
                                         $scope.loadData = function () {
 
                                         $http.get("php/view_leaveapply_my.php").success(function (response) {
@@ -668,11 +725,10 @@ and open the template in the editor.
                                                 $scope.show_rights_alerts = function(){
                                                 alert("You have no rights for this!");
                                                 }
-                                       
+
                                         });
-                                        
-                         ///////////////////////////////////////view my leave-end//////////////////////////////////////////////////
-                                        
+                                        ///////////////////////////////////////view my leave-end//////////////////////////////////////////////////
+
 ////                                                };
 //                                        });
 
