@@ -5,6 +5,7 @@
 define('DB_SERVER', 'localhost');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '123');
+//define('DB_PASSWORD', 'TreAFxgbhe');
 define('DB_DATABASE', 'leavedb');
 
 //define('DB_SERVER', 'localhost');

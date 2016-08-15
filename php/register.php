@@ -4,6 +4,7 @@ session_start();
 include '../db/config.php';
 
 $target_dir = "../uploads/"; //save path
+//$target_dir = "../nexleaveofficial/uploads/"; //save path
 // $linkadd = "../HomeCategory.php";
 $size = 500000 * 2; //image size 1mb
 
