@@ -28,9 +28,12 @@ foreach ($sql as $r) {
     if ($r['status'] == "0") {
 
         $status = "Pending";
-    } else {
+    } else if($r['status'] == "1"){
 
         $status = "Approved";
+    }else if($r['status'] == "2"){
+         $status = "Rejected";
+        
     }
 
 

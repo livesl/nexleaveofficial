@@ -23,14 +23,16 @@ $sql = $db->query($result);
 $data_arr = array();
 $i = 0;
 foreach ($sql as $r) {
-    if ($r['status'] == "0") {
+     if ($r['status'] == "0") {
 
         $status = "Pending";
-    } else {
+    } else if($r['status'] == "1"){
 
         $status = "Approved";
+    }else if($r['status'] == "2"){
+         $status = "Rejected";
+        
     }
-
 
     $data_arr[$i]['id'] = $r['id'];
     $data_arr[$i]['name'] = $r['username'];

@@ -20,7 +20,7 @@ $eduqlf = $_POST['eduqlf'];
 $proqlf = $_POST['proqlf'];
 $salory = $_POST['salory'];
 //$image = $_POST['image_user'];
-$status = "1";
+$status = "0";
 
 
 $target_file = $target_dir . basename($_FILES["file"]["name"]);

@@ -77,16 +77,18 @@ and open the template in the editor.
                                             <li><a href="#apply_leave" id="applyleave">Apply Leave</a></li>
                                             <li><a href="#register" id="clickregister" >Register</a></li>
                                             <li><a href="#my_leaves" id="click_myleaves">My Leaves</a></li>
-                                            <li><a href="#paymentsadd" id="click_mypayments">Payments</a></li>
+                                            <!--<li><a href="#paymentsadd" id="click_mypayments">Payments</a></li>-->
 
                                             <!--<li><a href="#">Page 1-3</a></li>--> 
                                         </ul>
                                     </li>
-                                    <li><a href="#">Settings</a></li> 
+                                    <!--<li><a href="#">Settings</a></li>--> 
                                     <?php if ($_SESSION['uName'] == "admin") { ?>
-                                        <li><a href="#view_apply_leave_admin" id="click_view_leaveapply">View for Admin</a></li> 
+                                        <li><a href="#view_apply_leave_admin" id="click_view_leaveapply">View Requests</a></li> 
+                                        <li><a href="#paymentsadd" id="click_mypayments">Payments</a></li> 
+                                        
                                     <?php } ?>
-                                    <li><a href="index">Sign Out</a></li> 
+                                        <li><a href="index.php">Sign Out</a></li> 
 
                                 </ul>
                             </div>
@@ -340,6 +342,7 @@ and open the template in the editor.
                                 Admin Status
 
                             </th>
+                             
 
                         </tr>
                         <tr ng-repeat=" x in views1" >
@@ -355,9 +358,13 @@ and open the template in the editor.
 
 
 
-                            <td><button type="button"  class="btn {{x.status=='Pending'? 'btn-danger':'btn-success'}} " ng-click="changeStatus(x.id)" >Approve</button> </td>
+                            <td><button type="button"  class="btn btn-primary" ng-click="changeStatus(x.id)" >Approval</button> 
+                                <button type="button"  class="btn btn-danger " ng-click="changeStatusReject(x.id)" >Reject</button></td>
+                           
 
-
+<!-- <td><button type="button"  class="btn {{x.status=='Pending'? 'btn-danger':'btn-success'}} " ng-click="changeStatus(x.id)" >Approval</button> 
+                                <button type="button"  class="btn btn-danger " ng-click="changeStatusReject(x.id)" >Reject</button></td>
+                           -->
 
 
 
@@ -426,9 +433,10 @@ and open the template in the editor.
                             <td>{{x.reason}}</td>
                             <td>{{x.leavedate_from}}</td>
                             <td >{{x.leavedate_to}}</td>
+                            <td >{{x.status}}</td>
 
 
-                            <td><button type="button"  class="btn {{x.status=='Pending'? 'btn-danger':'btn-success'}} " ng-click="show_rights_alerts()">Status</button> </td>
+                            <!--<td><button type="button"  class="btn {{x.status=='Pending'? 'btn-danger':'btn-success'}} " ng-click="show_rights_alerts()">Status</button> </td>-->
 
 
                         </tr>
@@ -459,7 +467,7 @@ and open the template in the editor.
 
                         <div class="form-group">
                             <label for="username">Date:</label> 
-                            <input type="text" class="form-control" id="datepickerpayments" name="datepickerfrom" placeholder="Click here" >
+                            <input type="text" class="form-control" id="datepickerpayments" ng-model="datepickerpayments" name="datepickerfrom" placeholder="Click here" >
 
                         </div>
 
@@ -467,7 +475,7 @@ and open the template in the editor.
 
                         <div  class="form-group"  >
                             <label for="username">Name:</label> 
-                            <select  class="form-control" id="assignperson1" name="assignperson1" ng-model="AP1"  ng-options ="AP1.name for AP1 in people1 track by AP1.name  "  >
+                            <select  class="form-control" id="assignperson1" name="assignperson1" ng-model="names.select_name"  ng-options ="AP1.name for AP1 in set_names_array track by AP1.name  "  >
                                 <option value="" selected="">Select</option>
                                 <!--<option value="" selected="">Select</option>-->
                                
@@ -483,23 +491,17 @@ and open the template in the editor.
 
                         <div class="form-group">
                             <label for="username">Amount:</label> 
-                            <input type="text" class="form-control" placeholder="Enter Amount" id="amount" name="amount"/>
-
-
+                            <input type="text" class="form-control" placeholder="Enter Amount" id="amount" name="amount" ng-model="amount"/>
+                            <input type="text" class="form-control hidden" placeholder="payment_id" id="payment_id" name="payment_id" ng-model="payment_id"/>
 
                         </div>
 
-
-
-
                         <input id="btn_addpayments" name="btn_addpayments" type="submit" class="btn btn-primary" value="Pay" />
-                        <input id="btn_addpayments_update" name="btn_addpayments_update" type="submit" class="btn btn-primary" value="Update" />
-
-
+                        <!--<input id="btn_addpayments_update" name="btn_addpayments_update" type="submit" class="btn btn-primary" value="Update" />-->
 
                     </div>
 
-                    <div  class="col-sm-8 " ng-controller="viewpayments">
+                    <div  class="col-sm-8 " >
                         <table class="table table-striped " id="tblview" >
 
 
@@ -522,6 +524,10 @@ and open the template in the editor.
                                 Amount
 
                             </th>
+                             <th >
+                               
+
+                            </th>
                             
 
                         </tr>
@@ -535,7 +541,7 @@ and open the template in the editor.
 
 
 
-                            <td><button type="button"  class="btn {{'btn-danger'}} " ng-click="updatepayments(x.id)">Edit</button> </td>
+                            <td><button type="button"  class="btn {{'btn-danger'}} " ng-click="updatepayments(views3.indexOf(x),x.id)">Edit</button> </td>
 
 
 
@@ -592,6 +598,8 @@ and open the template in the editor.
                                         click_mypayments();
                                         
                                 });
+                                
+                                var griddata= [];
                                         $(function () {
                                             $("#datepickerfrom").datepicker({dateFormat: 'yy-mm-dd', minDate: 0});
                                             $("#datepickerto").datepicker({dateFormat: 'yy-mm-dd', minDate: 0});
@@ -694,16 +702,15 @@ and open the template in the editor.
                                 /////////////////////////////////////////save payments///////////////////////////
                                 
                                 $("#btn_addpayments").click(function (){
+                                    payment_id="";
                                     date = $("#datepickerpayments").val();
-                                    
                                     payname = $("#assignperson1").val();
-                                    
-                                  
                                     amount = $("#amount").val();
+                                    payment_id = $("#payment_id").val();
+                                    alert(payment_id);
                                     
-                                    
-                                  
-                                    $.ajax({
+                                  if(payment_id==""){
+                                      $.ajax({
                                         type: 'POST',
                                         url: "php/payments.php",
                                         data: {date,payname,amount},
@@ -720,11 +727,50 @@ and open the template in the editor.
                                         
                                         
                                     });
+                                      
+                                      
+                                  }else{
+                                       $.ajax({
+                                        type: 'POST',
+                                        url: "php/paymentsupdate.php",
+                                        data: {payment_id,date,payname,amount},
+                                        success: function (data) {
+                                            console.log(data);
+                                             if (data == 1){
+                                                alert("Data Updated!");
+                                                        window.location = "dashboard.php";
+                                                } else{
+                                                alert("Error!");
+                                                }
+                        
+                                        }
+                                        
+                                        
+                                    });
+                                      
+                                      
+                                  }
+                                    
                                     
                                     
                                 });
                                
                                 /////////////////////////////////////////save payments///////////////////////////
+                                ///////////////////////////update payments/////////////////////////
+//                                $("#btn_addpayments_update").click(function (){
+//                                    
+//                                    
+//                                    
+//                                    
+//                                });
+                                
+                                
+                                
+                                
+                                ///////////////////////////update payments/////////////////////////
+                                
+                                
+                                
                                 
                                 
                                         /////////////////////////////////////////////////////////////click register-start//////////////////////////////
@@ -862,10 +908,69 @@ and open the template in the editor.
 //                                       var app = angular.module('myApp', []);
                                         app.controller('paymentscontroller', function ($scope, $http) {
 
-                                        $scope.people1 = [];
-                                                $http.get("php/load_user_name.php").success(function (result) {
-                                        $scope.people1 = result;
+                                       // $scope.people1 = [];
+                                       ////////////////initialize the array//////////// 
+                                         $scope.names = {
+                                                  set_names_array: [],
+                                                  select_name: {} 
+                                        };
+                                         ////////////////initialize the array//////////// 
+                                         
+                                          ////////////////dropdown filling//////////// 
+                                        $http.get("php/load_user_name.php").success(function (result) {
+                                        //$scope.people1 = result;
+                                        $scope.set_names_array = result;
+                                       
                                         });
+                                        ////////////////dropdown filling//////////// 
+                                         
+                                        
+                                        $scope.updatepayments = function (x,id){
+                                                    
+                                                   alert("index"+x);
+                                                   $("#btn_addpayments_update").show();
+                                                   console.log(griddata);
+                                                   $scope.amount=griddata[x]["amount"];
+                                                   $scope.datepickerpayments=griddata[x]["date"];
+                                                   $scope.payment_id=id;
+                                                   
+                                                   
+                                                 
+                        $scope.names.select_name = {
+                             'id': griddata[x]['user_id'],
+                             'name': griddata[x]['person_name']
+                                };
+                                                   
+                                                   
+//                                                   $scope.amount=100;
+//                                           $scope.Users_role = {
+//                                              'user_role_id': load_data[array_index]['user_role_id'],
+//                                              'role_name': Users_role
+//                                           };
+                                                    
+                                           };
+                                           
+                                           
+                                        $scope.loadData = function () {
+
+                                        $http.get("php/view_payments.php").success(function (response) {
+                                        $scope.views3 = response;
+                                                //alert(response);
+                                                console.log(response);
+                                                
+                                                 griddata = response;
+                                        });
+//                                        
+                                        };
+                                        
+                                        $scope.loadData();
+                                           
+                                         
+                                           
+                                           
+                                           
+                                          
+                                        
                                         });
                                         
                                         
@@ -921,6 +1026,36 @@ and open the template in the editor.
 
                                                 });
                                         };
+                                        
+                                        ////////////////////reject/////////////////////////////////
+                                        $scope.changeStatusReject = function (x) {
+                                        $.ajax({
+                                        type: 'POST',
+                                                url: "php/changeStatusReject.php",
+                                                data: {id: x},
+                                                success: function (data) {
+                                                alert("Rejected!");
+                                                        $scope.loadData();
+                                                }
+
+
+
+                                        });
+//                                                $.ajax({
+//                                                type: 'POST',
+//                                                        url: "php/sendmail.php",
+//                                                        data: {},
+//                                                        success: function (data) {
+//                                                        //
+//                                                        }
+//
+//
+//
+//                                                });
+                                        };
+                                      
+                                        ////////////////////reject/////////////////////////////////
+                                        
                                         });
                                         ////////////////////////////////////////end///////////////////////////////////////////        
 
@@ -946,27 +1081,24 @@ and open the template in the editor.
 //                                        });
 
                                         
-                                        app.controller('viewpayments', function ($scope, $http) {
-                                        $scope.loadData = function () {
-
-                                        $http.get("php/view_payments.php").success(function (response) {
-                                        $scope.views3 = response;
-                                                //alert(response);
-                                                console.log(response);
-                                        });
-                                        };
-                                                $scope.loadData();
-//                                                $scope.show_rights_alerts = function(){
-//                                                alert("You have no rights for this!");
-//                                                }
-                                                $scope.updatepayments = function (x){
-                                                    
-                                                    //////update code
-                                                    
-                                                    
-                                                }
-
-                                        });
+//                                        app.controller('viewpayments', function ($scope, $http) {
+////                                        $scope.loadData = function () {
+////
+////                                        $http.get("php/view_payments.php").success(function (response) {
+////                                        $scope.views3 = response;
+////                                                //alert(response);
+////                                                console.log(response);
+////                                                 griddata = response;
+////                                        });
+////                                        };
+////                                                $scope.loadData();
+//                                                
+////                                                $scope.show_rights_alerts = function(){
+////                                                alert("You have no rights for this!");
+////                                                }
+//                                              
+//
+//                                        });
 
      
         
