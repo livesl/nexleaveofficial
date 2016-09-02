@@ -15,10 +15,12 @@ $tp = $_POST['tp'];
 $pass = $_POST['pass'];
 $passmatch = $_POST['passmatch'];
 $nic = $_POST['nic'];
-$dob = $_POST['dob'];
+$dob = $_POST['datepickerfromdob'];
 $eduqlf = $_POST['eduqlf'];
 $proqlf = $_POST['proqlf'];
 $salory = $_POST['salory'];
+$bankname = $_POST['bankname'];
+$accountno = $_POST['accountno'];
 //$image = $_POST['image_user'];
 $status = "0";
 
@@ -53,7 +55,7 @@ if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpe
 
 
             $sql = "INSERT INTO register(first,last,tp,pass,confirmpass,basic_salory,education_qualifications,professional_qualifications,"
-                    . "imageurl,nic,dob,status)values('" . $first . "','" . $last . "','" . $tp . "','" . $pass . "','" . $passmatch . "','" . $salory . "','" . $eduqlf . "','" . $proqlf . "','" . $url . "','" . $nic . "','" . $dob . "','" . $status . "') ";
+                    . "imageurl,nic,dob,status,bank_name,account_number)values('" . $first . "','" . $last . "','" . $tp . "','" . $pass . "','" . $passmatch . "','" . $salory . "','" . $eduqlf . "','" . $proqlf . "','" . $url . "','" . $nic . "','" . $dob . "','" . $status . "','".$bankname."','".$accountno."') ";
 
             echo 'insert query';
 

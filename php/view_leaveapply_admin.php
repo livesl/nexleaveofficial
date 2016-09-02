@@ -41,7 +41,7 @@ foreach ($sql as $r) {
     $data_arr[$i]['leavedate_from'] = $r['leavedate_from'];
     $data_arr[$i]['leavedate_to'] = $r['leavedate_to'];
     $data_arr[$i]['status'] = $status;
-    ;
+   
 
 
     $i++;

@@ -1,10 +1,21 @@
+
+<?php session_start();
+
+if(isset($_SESSION['uName'])){
+    
+    
+
+
+
+?>
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<?php session_start(); ?>
+
+
 <html >
 
 
@@ -75,7 +86,9 @@ and open the template in the editor.
                                             <span class="caret"></span></a>
                                         <ul class="dropdown-menu">
                                             <li><a href="#apply_leave" id="applyleave">Apply Leave</a></li>
+                                             <?php if ($_SESSION['uName'] == "admin") { ?>
                                             <li><a href="#register" id="clickregister" >Register</a></li>
+                                             <?php } ?>
                                             <li><a href="#my_leaves" id="click_myleaves">My Leaves</a></li>
                                             <!--<li><a href="#paymentsadd" id="click_mypayments">Payments</a></li>-->
 
@@ -106,42 +119,134 @@ and open the template in the editor.
 
         <!--/////////////////////////////////////register//////////////////////////////////////////////////////////-->
 
-        <div class="jumbotron" id="register">
+        <div  id="register">
             <div class="container ">
                 <div class="row">
                     <div class="credits text-center">
                         <h3>
-                            Register for New User
+                            Employee Details
                         </h3>
 
                     </div>
                     <br>
-                    <div class="col-sm-12 " >
-                        <div  class="col-sm-4 ">
+                    
+                    
+                    <!--////////////////////////////////////////////////////////////////////////////////-->
+                    
+           <div id="view_employees">
+            <div class="container ">
+                <div class="row" ng-app="myApp" ng-controller="viewdetails" >
+                    
+                    <div class="col-sm-4" style="text-align: right;"> 
+                       
+                    </div>
+                    <div class="col-sm-4" style="text-align: right;"> 
+                       
+                    </div>
+                    <div class="col-sm-4" style="text-align: right;"> 
+                        <button type="button"  class="btn btn-primary " ng-click="add_new_employee()" ng-show="btn_add" >Add New</button><br><br>
+                        <button type="button"  class="btn btn-primary " ng-click="view_employee()" ng-show="btn_view" >View</button><br><br>
+                    </div>
+                    
+                   
+                    
+                    <!--////////code-->
+                    <table class="table table-striped " id="tbl_employee_view" ng-show="gridhide">
+                        
 
-                            <div class="form-group">
-                                <label for="username">First name:</label> 
-                                <input type="text" class="form-control" placeholder="Enter first name" id="first" name="first" />
+
+                        <tr>
+                            <th>
+                                #
+
+                            </th>
+                            <th>
+                                User Name
+
+                            </th>
+                            <th>
+                                Full Name
+
+                            </th>
+
+                            <th >
+                                NIC
+
+                            </th>
+                            <th>
+                                Bank Name
+
+                            </th>
+
+                            <th>
+                                Account No
+
+                            </th>
+                            
+                             <th> 
+                             
+                             </th>
+                           
+                             
+
+                        </tr>
+                        <tr ng-repeat=" x in views4" >
+<!--                           <td ng-if="$odd" style="background-color:#f1f1f1">-->
+                            <td>{{x.id}}</td>
+                            <td>{{x.first}}</td>
+                            <td>{{x.last}}</td>
+                            <td>{{x.nic}}</td>
+                            <td>{{x.bank_name}}</td>
+                            
+                            <td >{{x.account_number}}</td> <td><button type="button"  class="btn btn-primary" ng-click="employee_edit(x.id)" >Edit</button> 
+                                <!--<button type="button"  class="btn btn-danger " ng-click="changeStatusReject(x.id)" >Reject</button></td>-->
+                           
+
+<!-- <td><button type="button"  class="btn {{x.status=='Pending'? 'btn-danger':'btn-success'}} " ng-click="changeStatus(x.id)" >Approval</button> 
+                                <button type="button"  class="btn btn-danger " ng-click="changeStatusReject(x.id)" >Reject</button></td>
+                           -->
+
+
+
+
+                        </tr>
+
+
+                    </table>
+
+                    <div class="col-sm-12" ng-hide="gridhide">
+                      
+                        <div  class="col-sm-4 " >
+                            
+                            
+                           <div class="form-group hidden ">
+                               
+                               <input type="text" class="form-control"  id="user_id" name="user_id" ng-model="user_id" />
 
                             </div>
                             <div class="form-group">
-                                <label for="username">Last name:</label> 
-                                <input type="text" class="form-control" placeholder="Enter last name" id="last" name="last" />
+                                <label for="username">User name:</label> 
+                                <input type="text" class="form-control" placeholder="Enter User name" id="first" name="first" ng-model="first"  />
+
+                            </div>
+                            <div class="form-group">
+                                <label for="username">Full name:</label> 
+                                <input type="text" class="form-control" placeholder="Enter Full name" id="last" name="last" ng-model="last" />
 
                             </div>
                             <div class="form-group">
                                 <label for="username">Phone No:</label> 
-                                <input type="text" class="form-control" placeholder="Enter phone number" id="tp" name="tp"/>
+                                <input type="text" class="form-control" placeholder="Enter phone number" id="tp" name="tp" ng-model="tp"/>
 
                             </div>
                             <div class="form-group">
                                 <label for="password">Password:</label>
-                                <input type="password" class="form-control" placeholder="Enter Password" id="pass" name="pass"  />
+                                <input type="password" class="form-control" placeholder="Enter Password" id="pass" name="pass" ng-model="pass" />
 
                             </div>
                             <div class="form-group">
                                 <label for="password">Confirm Password:</label> 
-                                <input type="password" class="form-control" placeholder="Confirm Password" id="passmatch" name="passmatch"  />
+                                <input type="password" class="form-control" placeholder="Confirm Password" id="passmatch" name="passmatch" ng-model="passmatch"  />
 
                             </div>
 
@@ -154,31 +259,38 @@ and open the template in the editor.
 
                             <div class="form-group">
                                 <label for="nic">NIC/PP:</label> 
-                                <input type="text" class="form-control" placeholder="Enter NIC/PP" id="nic" name="nic"  />
+                                <input type="text" class="form-control" placeholder="Enter NIC/PP" id="nic" name="nic" ng-model="nic"  />
 
                             </div>
 
-                            <div class="form-group">
+<!--                            <div class="form-group">
                                 <label for="dob">DOB:</label> 
-                                <input type="text" class="form-control" placeholder="Enter DOB(yyyy-mm-dd)" id="dob" name="dob"  />
+                                <input type="text" class="form-control" placeholder="Enter DOB(yyyy-mm-dd)" id="dob" name="dob" />
+                                 <P style="color: red;font-size: small; ">Required!!!</P>
+                            </div>-->
+                            
+                            <div class="form-group">
+                            <label for="username">DOB:</label> 
+                            <input type="text" class="form-control" id="datepickerfromdob" name="datepickerfromdob" placeholder="Click here(yyyy-mm-dd)" ng-model="datepickerfromdob" >
+                           <P style="color: red;font-size: small; ">Required!!!</P>
 
-                            </div>
+                        </div>
 
                             <div class="form-group">
                                 <label for="eduqlf">Education Qualification:</label> 
-                                <input type="text" class="form-control" placeholder="Enter Edu/Qualification" id="eduqlf" name="eduqlf"  />
+                                <input type="text" class="form-control" placeholder="Enter Edu/Qualification" id="eduqlf" name="eduqlf" ng-model="eduqlf" />
 
                             </div>
 
                             <div class="form-group">
                                 <label for="proqlf">Professional Qualification:</label> 
-                                <input type="text" class="form-control" placeholder="Enter Pro/Qualification" id="proqlf" name="proqlf"  />
+                                <input type="text" class="form-control" placeholder="Enter Pro/Qualification" id="proqlf" name="proqlf" ng-model="proqlf" />
 
                             </div>
 
                             <div class="form-group">
                                 <label for="basic_salory">Basic Salory:</label> 
-                                <input type="text" class="form-control" placeholder="Enter Basic Salory" id="basic_salory" name="basic_salory"  />
+                                <input type="text" class="form-control" placeholder="Enter Basic Salory" id="basic_salory" name="basic_salory" ng-model="basic_salory" />
 
                             </div>
 
@@ -188,25 +300,49 @@ and open the template in the editor.
                         </div>
 
                         <div  class="col-sm-4 ">
+                            
+                        <div  class="form-group"  >
+                            <label for="bankname">Bank Name:</label> 
+                            <select  class="form-control" id="bankname" name="bankname" ng-model="bankname"  >
+                                <option value="" selected="">Select</option>
+                                <option value="BOC" selected="">BOC</option>
+                                <option value="LB" selected="">LB</option>
+                                <!--                                <option value="AP.name">--Select--</option>-->
+
+
+
+                            </select>
+
+
+
+                        </div>
+                            
+                             <div class="form-group">
+                                <label for="accountno">Account Number:</label> 
+                                <input type="text" class="form-control" placeholder="Enter Account No" id="accountno" name="accountno" ng-model="accountno" />
+
+                            </div>
+                            
+                            
                             <div class="form-group">
 
                                 <label for="imageuser">Image:</label> 
 <!--                                <input type="file"  id="imageuser" name="imageuser"><br>
                                 <input type="submit" value="upload" id="uploadsubmit" name="uploadsubmit" class="btn btn-danger" />-->
 
-                                <input  data-title="Please Select Product Image " required="" placeholder="200 w x 200 h" type="text" class="form-control " readonly id="filetxt0"  aria-describedby="basic-addon2">
+                                <input  data-title="Please Select Product Image " required="" placeholder="200 w x 200 h" type="text" class="form-control " readonly id="filetxt0"  aria-describedby="basic-addon2" ng-model="filename"/>
                                 <input type="hidden" name="filename"  />
 
-                                <button type="button" class="btn btn-default" onclick="imageinput('0', 'clr', 200, 200)"  id="clbtn" >
+                                <button type="button" class="btn btn-default" onclick="imageinput('0', 'clr', 200, 200)"  id="clbtn"  >
                                     <span class="glyphicon glyphicon-remove"></span> Clear
                                 </button>
-                                <div id="sbtn" class="btn btn-default" onclick="imageinput('0', 'brow', 200, 200)" >
+                                <div id="sbtn" class="btn btn-default" onclick="imageinput('0', 'brow', 200, 200)"  >
                                     <span class="glyphicon glyphicon-folder-open"></span>
                                     Browse
                                 </div>
 
-                                <div>  
-                                    <img   width="150" alt="no image" style="display:none;" id="fileimg0" />
+                                <div >  
+                                    <img   width="150" alt="no image" style="" id="fileimg0" src="{{filename}}"/>
 
                                 </div>
 
@@ -216,8 +352,9 @@ and open the template in the editor.
 
                                 <label id="filelbl0"  style="color: red;" ></label>
 
-
+                                 <P style="color: red;font-size: small; ">Required!!!</P>
                             </div>
+                             
 
 
 
@@ -227,6 +364,24 @@ and open the template in the editor.
 
                         </div>
                     </div>
+
+                    <div  class="col-sm-3 "></div>
+                </div>
+            </div>
+        </div>
+
+                    
+                    <!--////////////////////////////////////////////////////////////////////////////-->
+<!--                    <div class="col-sm-4" style="text-align: center;">
+                         <div class="form-group ">
+                               
+                               <input type="text" class="form-control" placeholder="Enter User name" id="find_user_name" name="find_user_name" ng-model="find_user_name" />
+                               <br><button type="submit" class="btn btn-primary" id="btn_find_username" ng-click="btn_find_username()">Find</button>
+
+                            </div>
+                        
+                    </div>-->
+           
                 </div>
             </div>
         </div>
@@ -569,6 +724,8 @@ and open the template in the editor.
         <?php include './php/footer.php'; ?>
          <!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>-->
         <script src="js/boostrap/jquery.min.js" type="text/javascript"></script>
+        <!--<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>-->
+        
         <script src="js/boostrap/bootstrap.min.js" type="text/javascript"></script>
 
         <script src="js/boostrap/scripts.js" type="text/javascript"></script>
@@ -609,6 +766,11 @@ and open the template in the editor.
                                          $(function () {
                                             $("#datepickerpayments").datepicker({dateFormat: 'yy-mm-dd'});  
                                         });
+                                        
+                                        $(function (){
+                                            
+                                            $("#datepickerfromdob").datepicker({dateFormat: 'yy-mm-dd'});
+                                        })
                                         function upload() {
                                         $("#uploadsubmit").click(function () {
                                         image_user_upload = $("#imageuser").val();
@@ -692,6 +854,26 @@ and open the template in the editor.
 
                                 });
                                 });
+                                
+                                /////////////////////////////////////find user anme////////////////////
+//                                $("#btn_find_username").click(function (){
+////                                    alert("find");
+//                                    user_name = $("#find_user_name").val();
+//                                    $.ajax({
+//                                        type: 'POST',
+//                                        url: "php/find_details_from_username.php",
+//                                        data: {user_name},
+//                                        success: function (data) {
+////                                            alert(data);
+//                                         }
+//                                        
+//                                        
+//                                    });
+//                                    
+//                                    
+//                                    
+//                                });
+                                /////////////////////////////////////find user anme////////////////////
                                 
                                 
                                 
@@ -786,17 +968,21 @@ and open the template in the editor.
 //////////////////////////////////////////////////////////register save-start//////////////////////////////
 
                                         $("#btn_register").click(function () {
+                                            
+                                           
 
-                                first = $("#first").val();
+                                        first = $("#first").val();
                                         last = $("#last").val();
                                         tp = $("#tp").val();
                                         pass = $("#pass").val();
                                         passmatch = $("#passmatch").val();
                                         nic = $("#nic").val();
-                                        dob = $("#dob").val();
+                                        datepickerfromdob = $("#datepickerfromdob").val();
                                         eduqlf = $("#eduqlf").val();
                                         proqlf = $("#proqlf").val();
                                         salory = $("#basic_salory").val();
+                                        bankname=$("#bankname").val();
+                                        accountno=$("#accountno").val();
                                         var file_data = $("#file0").prop("files")[0]; // Getting the properties of file from file field
                                         var form_data = new FormData(); // Creating object of FormData class
                                         form_data.append("file", file_data)              // Appending parameter named file with properties of file_field to form_data
@@ -806,12 +992,16 @@ and open the template in the editor.
                                         form_data.append("pass", pass)
                                         form_data.append("passmatch", passmatch)
                                         form_data.append("nic", nic)
-                                        form_data.append("dob", dob)
+                                        form_data.append("datepickerfromdob", datepickerfromdob)
                                         form_data.append("eduqlf", eduqlf)
                                         form_data.append("proqlf", proqlf)
                                         form_data.append("salory", salory)
+                                        form_data.append("bankname", bankname)
+                                        form_data.append("accountno", accountno)
                                         // Adding extra parameters to form_data
-                                        $.ajax({
+                                        usid=$("#user_id").val();
+                                         if(usid == ""){
+                                                $.ajax({
 
 
                                         url: "php/register.php",
@@ -824,12 +1014,22 @@ and open the template in the editor.
                                                 success: function (data) {
                                                 console.log(data);
                                                         alert("Data Saved");
-                                                        window.location = "dashboard.php";
+                                                      window.location = "dashboard.php";
+
+                                                       
+
                                                 }
 
 
 
                                         });
+                                                
+                                            }else{
+                                                alert("Not yet functioning Update");
+                                                
+                                            }
+                                        
+                                        
 //                                        $.ajax({
 //                                        type: 'POST',
 ////                    url: "php/register.php?action = save_Register",
@@ -989,6 +1189,104 @@ and open the template in the editor.
                                         
 /////////////////////////////////////////////////////////////view details admin- start////////////////////////////
                                         app.controller('viewdetails', function ($scope, $http) {
+                                            
+                                        $scope.loadData_employee = function () {
+
+                                        $http.get("php/find_details_from_username.php").success(function (response) {
+                                        $scope.views4 = response;
+                                                //alert(response);
+                                                console.log(response);
+                                                
+                                                 
+                                        });
+//                                        
+                                        };
+                                        $scope.loadData_employee();
+                                        $scope.gridhide=true;
+                                        $scope.btn_view=false;
+                                        $scope.btn_add=true;
+                                       
+                                        
+                                        $scope.add_new_employee=function (){
+//                                            
+                                            $scope.gridhide=false;
+                                            $scope.btn_view=true;
+                                            $scope.btn_add=false;
+                                                             $scope.user_id="";
+                                                             $scope.first="";
+                                                             $scope.last="";
+                                                             $scope.tp="";
+                                                             $scope.pass="";
+                                                             $scope.passmatch="";
+                                                             $scope.basic_salory="";
+                                                             $scope.eduqlf="";
+                                                             $scope.proqlf="";
+                                                             $scope.filename="";
+                                                             $scope.nic="";
+                                                             $scope.datepickerfromdob="";
+                                                             $scope.bankname="";
+                                                             $scope.accountno="";
+                                           
+                                            
+                                        };
+                                        $scope.view_employee=function (){
+//                                           
+                                            $scope.gridhide=true;
+                                            $scope.btn_view=false;
+                                            $scope.btn_add=true;
+                                           
+                                        };
+                                        
+                                        $scope.employee_edit=function (id){
+                                           
+                                            $scope.gridhide=false;
+                                            $scope.btn_view=true;
+                                            $scope.btn_add=false;
+                                            
+                                           $.ajax({
+                                                type: 'POST',
+                                                        url: "php/find_details_from_username_1.php",
+                                                        dataType: 'json',
+                                                        data: {user_id:id},
+                                                        success: function (data) {
+                                                        console.log(data);
+                                                        $scope.$apply(function () {
+                                                             $scope.user_id=data[0]["id"];
+                                                             $scope.first=data[0]["first"];
+                                                             $scope.last=data[0]["last"];
+                                                             $scope.tp=data[0]["tp"];
+                                                             $scope.pass=data[0]["pass"];
+                                                             $scope.passmatch=data[0]["confirmpass"];
+                                                             $scope.basic_salory=data[0]["basic_salory"];
+                                                             $scope.eduqlf=data[0]["education_qualifications"];
+                                                             $scope.proqlf=data[0]["professional_qualifications"];
+                                                             $scope.filename=data[0]["imageurl"];
+                                                             $scope.nic=data[0]["nic"];
+                                                             $scope.datepickerfromdob=data[0]["dob"];
+                                                             $scope.bankname=data[0]["bank_name"];
+                                                             $scope.accountno=data[0]["account_number"];
+
+                                                        });
+                                                       
+                                                        
+                                                        
+                                                        }
+
+
+                                                });
+
+//                                                $http.get("php/find_details_from_username_1.php",{params:{"user_id":id}}).success(function (response) {
+//                                        $scope.views5 = response;
+//                                                //alert(response);
+//                                                console.log(response);
+//                                                
+//                                                 
+//                                        });
+                                       
+                                        
+                                         };
+                                        
+                                        ////////////////////////////////////
                                         $scope.loadData = function () {
 
                                         $http.get("php/view_leaveapply_admin.php").success(function (response) {
@@ -1026,6 +1324,12 @@ and open the template in the editor.
 
                                                 });
                                         };
+//                                        $scope.btn_find_username=function (){
+//                                            alert("asd");
+//                                            
+//                                            
+//                                        };
+                                        
                                         
                                         ////////////////////reject/////////////////////////////////
                                         $scope.changeStatusReject = function (x) {
@@ -1055,6 +1359,8 @@ and open the template in the editor.
                                         };
                                       
                                         ////////////////////reject/////////////////////////////////
+                                        
+                                        
                                         
                                         });
                                         ////////////////////////////////////////end///////////////////////////////////////////        
@@ -1108,3 +1414,9 @@ and open the template in the editor.
 
     </body>
 </html>
+<?php
+}else{
+    header("location:index.php");  
+    
+}
+?>
