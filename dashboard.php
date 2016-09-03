@@ -48,18 +48,16 @@ and open the template in the editor.
     </head>
     <body ng-app="myApp" >
 
-        <div class="credits text-center">
-            <h1>
-                Dashboard
-            </h1>
-
-        </div>
+       
 
 
         <!--////////////////////////////////////////////////////////////////////////////////////////////////////////-->
         <div class="jumbotron"  id="adminpage" >
             <div class="container ">
                 <div class="row">
+              
+
+             </div>
                     <div  class="col-sm-3 ">
                         <label for="username"> 
                             <?php
@@ -110,7 +108,14 @@ and open the template in the editor.
 
                     </div>
 
-                    <div  class="col-sm-3 "></div>
+                <div  class="col-sm-3 ">
+                    
+                         
+                    <div style="text-align: right;">
+                 <h4 style="color: blueviolet;">
+                DASHBOARD
+            </h4>
+                </div>
                 </div>
             </div>
         </div>
@@ -122,13 +127,8 @@ and open the template in the editor.
         <div  id="register">
             <div class="container ">
                 <div class="row">
-                    <div class="credits text-center">
-                        <h3>
-                            Employee Details
-                        </h3>
-
-                    </div>
-                    <br>
+                   
+                   
                     
                     
                     <!--////////////////////////////////////////////////////////////////////////////////-->
@@ -140,7 +140,10 @@ and open the template in the editor.
                     <div class="col-sm-4" style="text-align: right;"> 
                        
                     </div>
-                    <div class="col-sm-4" style="text-align: right;"> 
+                    <div class="col-sm-4" style="text-align: center;"> 
+                         <h3>
+                            Employee Details
+                        </h3>
                        
                     </div>
                     <div class="col-sm-4" style="text-align: right;"> 
@@ -970,7 +973,7 @@ and open the template in the editor.
                                         $("#btn_register").click(function () {
                                             
                                            
-
+                                        user_id=$("#user_id").val();        
                                         first = $("#first").val();
                                         last = $("#last").val();
                                         tp = $("#tp").val();
@@ -986,6 +989,7 @@ and open the template in the editor.
                                         var file_data = $("#file0").prop("files")[0]; // Getting the properties of file from file field
                                         var form_data = new FormData(); // Creating object of FormData class
                                         form_data.append("file", file_data)              // Appending parameter named file with properties of file_field to form_data
+                                        form_data.append("user_id",user_id)
                                         form_data.append("first", first)                 // Adding extra parameters to form_data
                                         form_data.append("last", last)
                                         form_data.append("tp", tp)
@@ -1025,7 +1029,31 @@ and open the template in the editor.
                                         });
                                                 
                                             }else{
-                                                alert("Not yet functioning Update");
+                                               $.ajax({
+
+
+                                       
+                                                //dataType: 'script',
+                                                type: 'post',
+                                                url: "php/register_update.php",
+                                                data: {user_id,first,last,tp,pass,passmatch,nic,datepickerfromdob,eduqlf,proqlf,salory,bankname,accountno}, // Setting the data attribute of ajax with file_data
+                                                
+                                                success: function (data) {
+                                                console.log(data);
+                                               if (data == 1){
+                                                alert("Data Updated!!");
+                                                        window.location = "dashboard.php";
+                                                } else{
+                                                alert("Error!");
+                                                }
+
+                                                       
+
+                                                }
+
+
+
+                                        });
                                                 
                                             }
                                         
