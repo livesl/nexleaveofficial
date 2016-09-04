@@ -20,7 +20,7 @@ register.id
 FROM
 register
 WHERE
-register.`first` = '" . $assignperson . "'";
+register.`first` = '" . $username . "'";
 
 foreach ($db->query($selectsql)as $row){
     

@@ -96,8 +96,14 @@ and open the template in the editor.
                                     <!--<li><a href="#">Settings</a></li>--> 
                                     <?php if ($_SESSION['uName'] == "admin") { ?>
                                         <li><a href="#view_apply_leave_admin" id="click_view_leaveapply">View Requests</a></li> 
+                                        <li class="dropdown">
+                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Payments
+                                            <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
                                         <li><a href="#paymentsadd" id="click_mypayments">Payments</a></li> 
-                                        
+                                        <li><a href="#view_payments_search" id="click_find_payments">Find Payments</a></li> 
+                                        </ul>
+                                        </li>
                                     <?php } ?>
                                         <li><a href="index.php">Sign Out</a></li> 
 
@@ -137,16 +143,20 @@ and open the template in the editor.
             <div class="container ">
                 <div class="row" ng-app="myApp" ng-controller="viewdetails" >
                     
-                    <div class="col-sm-4" style="text-align: right;"> 
-                       
+                    <div class="col-sm-3" style="text-align: center;"> 
+                        <div class="form-group">
+                               
+                                <input type="text" class="form-control" placeholder="Search" id="search" name="search" ng-model="search" />
+
+                            </div>
                     </div>
-                    <div class="col-sm-4" style="text-align: center;"> 
+                    <div class="col-sm-6" style="text-align: center;"> 
                          <h3>
                             Employee Details
                         </h3>
                        
                     </div>
-                    <div class="col-sm-4" style="text-align: right;"> 
+                    <div class="col-sm-3" style="text-align: right;"> 
                         <button type="button"  class="btn btn-primary " ng-click="add_new_employee()" ng-show="btn_add" >Add New</button><br><br>
                         <button type="button"  class="btn btn-primary " ng-click="view_employee()" ng-show="btn_view" >View</button><br><br>
                     </div>
@@ -193,7 +203,7 @@ and open the template in the editor.
                              
 
                         </tr>
-                        <tr ng-repeat=" x in views4" >
+                        <tr ng-repeat=" x in views4 |filter:search" >
 <!--                           <td ng-if="$odd" style="background-color:#f1f1f1">-->
                             <td>{{x.id}}</td>
                             <td>{{x.first}}</td>
@@ -541,6 +551,113 @@ and open the template in the editor.
 
 
         <!--///////////////////////////////////////////view Apply leave admin- end////////////////////////////////////////////////////-->
+        
+        <!--//////////////////////////////////////////////////view payments search start//////////////////////////////////////////////////////////////-->
+        <div class="jumbotron" id="view_payments_search">
+            <div class="container " ng-app="myApp" ng-controller="viewdetails">
+                <div class="row"  >
+                   
+                        <div class="col-sm-3">
+                            <div  class="form-group"  >
+                            <label for="username">Employee Name:</label> 
+                            <select  class="form-control" id="employee_name" name="employee_name" ng-model="form.employee_name"  ng-options ="employee_name.name for employee_name in people track by employee_name.name  "   >
+                            <option value="" selected="">Select</option>
+                                <!-- <option value="AP.name">--Select--</option>-->
+                            </select>
+                            </div>
+                            
+                            
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group" >
+                            <label for="username">Date(From):</label> 
+                            <input type="text" class="form-control" id="datepickerfrompayments" name="datepickerfrompayments" placeholder="Click here" ng-model="form.datepickerfrompayments" >    
+                            </div>
+                            
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group" >
+                            <label for="username">Date(To):</label> 
+                            <input type="text" class="form-control" id="datepickertopayments" name="datepickertopayments" placeholder="Click here" ng-model="form.datepickertopayments">
+                            </div>
+                            
+                        </div>
+                        <div class="col-sm-3">
+                            
+                            <div class="form-group">
+                            <br>
+                            <input id="btn_find_payments" name="btn_find_payments" type="submit" class="btn btn-primary" value="Find" ng-click="loadPaymentsdata()" /><br>
+                            </div>
+                           
+                            
+                        </div>
+                    <!--////////code-->
+                  
+                </div><br>
+                    
+                   
+
+                  
+
+                    <div class="row" >
+                        <div class="col-sm-4" >
+                    
+                            <table class="table table-striped " id="tblview" >
+                        
+
+
+                        <tr>
+                            <th>
+                                #
+
+                            </th>
+                            <th>
+                                Date
+
+                            </th>
+                            <th>
+                                Amount
+
+                            </th>
+
+                           
+                             
+
+                        </tr>
+                        <tr ng-repeat=" x in views5" >
+<!--                           <td ng-if="$odd" style="background-color:#f1f1f1">-->
+                            <td>{{x.id}}</td>
+                            <td>{{x.date}}</td>
+                            <td>{{x.amount}}</td>
+                            
+                        </tr>
+
+
+                            </table>
+                    </div>
+                        
+                        <div class="col-sm-8">
+                            
+                            <div class="form-group">
+                                <label for="total">Total:<span style="color: red;">  {{payment_total}}</span></label> 
+                            <!--<input style="width: 150px;" type="text" class="form-control" placeholder="" id="total" name="total" ng-model="total"/>-->
+                            </div>
+                          
+                        </div>    
+                  </div>
+
+<!--                    <div  class="col-sm-1 "></div>
+
+                    <div  class="col-sm-1 "></div>-->
+                </div>
+            </div>
+      
+
+        <!--/////////////////////////////////////////////////////view payments search end///////////////////////////////////////////////////////////-->
+        
+        
+        
+        
 
 
         <!--///////////////////////////////////////////view Apply leave my- start////////////////////////////////////////////////////-->
@@ -749,6 +866,7 @@ and open the template in the editor.
                                         $("#view_apply_leave_my").hide();
                                         $("#paymentsadd").hide();
                                         $("#btn_addpayments_update").hide();
+                                        $("#view_payments_search").hide();
                                         
                                         clickRegister();
                                         clickApplyleave();
@@ -756,23 +874,29 @@ and open the template in the editor.
                                         click_myleaves();
                                         upload();
                                         click_mypayments();
+                                        click_find_payments();
                                         
                                 });
                                 
                                 var griddata= [];
+                                
+                                         $(function () {
+                                            $("#datepickerfrompayments").datepicker({dateFormat: 'yy-mm-dd',changeYear: true});
+                                            $("#datepickertopayments").datepicker({dateFormat: 'yy-mm-dd',changeYear: true});
+                                        });
                                         $(function () {
-                                            $("#datepickerfrom").datepicker({dateFormat: 'yy-mm-dd', minDate: 0});
-                                            $("#datepickerto").datepicker({dateFormat: 'yy-mm-dd', minDate: 0});
+                                            $("#datepickerfrom").datepicker({dateFormat: 'yy-mm-dd', minDate: 0,changeYear: true});
+                                            $("#datepickerto").datepicker({dateFormat: 'yy-mm-dd', minDate: 0,changeYear: true});
                                         });
                                         
                                         
                                          $(function () {
-                                            $("#datepickerpayments").datepicker({dateFormat: 'yy-mm-dd'});  
+                                            $("#datepickerpayments").datepicker({dateFormat: 'yy-mm-dd',changeYear: true});  
                                         });
                                         
                                         $(function (){
                                             
-                                            $("#datepickerfromdob").datepicker({dateFormat: 'yy-mm-dd'});
+                                            $("#datepickerfromdob").datepicker({dateFormat: 'yy-mm-dd',changeYear: true});
                                         })
                                         function upload() {
                                         $("#uploadsubmit").click(function () {
@@ -798,6 +922,7 @@ and open the template in the editor.
                                         $("#view_apply_leave_my").hide();
                                         $("#register").slideDown();
                                         $("#paymentsadd").hide();
+                                        $("#view_payments_search").hide();
                                 });
                                 }
 
@@ -808,7 +933,21 @@ and open the template in the editor.
                                 $("#view_apply_leave_my").hide();
                                 $("#register").hide();
                                 $("#paymentsadd").slideDown();
+                                $("#view_payments_search").hide();
                                 });
+                                }
+                                
+                                function click_find_payments(){
+                                $("#click_find_payments").click(function (){
+                                $("#view_apply_leave_admin").hide();
+                                $("#applyleave_part").hide();
+                                $("#view_apply_leave_my").hide();
+                                $("#register").hide();
+                                $("#paymentsadd").hide();
+                                $("#view_payments_search").slideDown();
+                                });
+                                    
+                                    
                                 }
 
                                 function clickViewapplyadmin(){
@@ -818,6 +957,7 @@ and open the template in the editor.
                                         $("#view_apply_leave_my").hide();
                                         $("#paymentsadd").hide();
                                         $("#view_apply_leave_admin").slideDown();
+                                        $("#view_payments_search").hide();
                                 });
                                 }
 
@@ -828,6 +968,7 @@ and open the template in the editor.
                                         $("#view_apply_leave_my").hide();
                                         $("#register").hide();
                                         $("#view_apply_leave_admin").hide();
+                                        $("#view_payments_search").hide();
                                 });
                                 }
 
@@ -838,6 +979,7 @@ and open the template in the editor.
                                         $("#register").hide();
                                         $("#view_apply_leave_admin").hide();
                                         $("#applyleave_part").hide();
+                                        $("#view_payments_search").hide();
                                 });
                                 }
 
@@ -858,25 +1000,13 @@ and open the template in the editor.
                                 });
                                 });
                                 
-                                /////////////////////////////////////find user anme////////////////////
-//                                $("#btn_find_username").click(function (){
+                                /////////////////////////////////////find user payments////////////////////
+//                                $("#btn_find_payments").click(function (){
 ////                                    alert("find");
-//                                    user_name = $("#find_user_name").val();
-//                                    $.ajax({
-//                                        type: 'POST',
-//                                        url: "php/find_details_from_username.php",
-//                                        data: {user_name},
-//                                        success: function (data) {
-////                                            alert(data);
-//                                         }
-//                                        
-//                                        
-//                                    });
-//                                    
 //                                    
 //                                    
 //                                });
-                                /////////////////////////////////////find user anme////////////////////
+                                /////////////////////////////////////find user payments////////////////////
                                 
                                 
                                 
@@ -1313,7 +1443,50 @@ and open the template in the editor.
                                        
                                         
                                          };
-                                        
+                                         
+                                          $scope.people = [];
+                                                $http.get("php/load_user_name.php").success(function (result) {
+                                        $scope.people = result;
+                                        });
+                                         
+                                         
+                                         ///////////////////////////////////////////////////////
+                                          $scope.form={employee_name:'',datepickerfrompayments:'',datepickertopayments:''};
+                                           $scope.loadPaymentsdata = function () {
+                                               
+                                           
+                                           $http({
+                                               method:'POST',
+                                               url:'php/view_payments_search.php',
+                                               data:{'employee_name':$("#employee_name").val(),'date_from_pay':$("#datepickerfrompayments").val(),'date_to_pay':$("#datepickertopayments").val()},
+//                                               data:{'employee_name':"ranjan",'date_from_pay':"2016-09-01",'date_to_pay':"2016-09-30"},
+                                               headers: {'Content-Type': 'application/x-www-form-urlencoded:charset=utf-8;'}
+                                             
+                                             
+                                               
+//                                           }).then(function successCallback(response){
+//                                           $scope.views5 = response['data_set'];
+//                                           $scope.payment_total=response['total'];
+//                                           console.log(response);
+//                                               
+//                                           }
+//                                           ,function errorCallback(response) {
+//                                               alert(response);
+//                                               
+//                                            });
+                                              
+                                              
+                                                }).success(function (response){
+                                           $scope.views5 = response['data_set'];
+                                           $scope.payment_total=response['total'];
+                                           console.log(response);
+                                               
+                                           });
+                                          
+                                         
+                                         };
+                                          
+//                                        $scope.loadPaymentsdata();
                                         ////////////////////////////////////
                                         $scope.loadData = function () {
 
