@@ -23,7 +23,7 @@ register
 WHERE
 payments.register_id = register.id AND
 payments.date BETWEEN '".$date_from."' AND '".$date_to."' AND
-register.`first` = '".$emp_name."'
+register.`first` = '".$emp_name."' 
 ORDER BY
 payments.date DESC
 ";

@@ -144,11 +144,11 @@ and open the template in the editor.
                 <div class="row" ng-app="myApp" ng-controller="viewdetails" >
                     
                     <div class="col-sm-3" style="text-align: center;"> 
-                        <div class="form-group">
+                        <div class="form-group" ng-show="search1" >
                                
-                                <input type="text" class="form-control" placeholder="Search" id="search" name="search" ng-model="search" />
+                            <input type="text" class="form-control" placeholder="Search" id="search" name="search" ng-model="search"  />
 
-                            </div>
+                        </div>
                     </div>
                     <div class="col-sm-6" style="text-align: center;"> 
                          <h3>
@@ -867,6 +867,12 @@ and open the template in the editor.
                                         $("#paymentsadd").hide();
                                         $("#btn_addpayments_update").hide();
                                         $("#view_payments_search").hide();
+                                       
+                                        $("#datepickerpayments").datepicker({dateFormat: 'yy-mm-dd',changeYear: true});
+                                        $('#datepickerpayments').datepicker('setDate', 'today');
+                                        
+                                        
+                                        
                                         
                                         clickRegister();
                                         clickApplyleave();
@@ -876,12 +882,15 @@ and open the template in the editor.
                                         click_mypayments();
                                         click_find_payments();
                                         
+                                        
                                 });
                                 
                                 var griddata= [];
                                 
                                          $(function () {
                                             $("#datepickerfrompayments").datepicker({dateFormat: 'yy-mm-dd',changeYear: true});
+                                           
+                                             
                                             $("#datepickertopayments").datepicker({dateFormat: 'yy-mm-dd',changeYear: true});
                                         });
                                         $(function () {
@@ -1363,6 +1372,7 @@ and open the template in the editor.
                                         $scope.gridhide=true;
                                         $scope.btn_view=false;
                                         $scope.btn_add=true;
+                                        $scope.search1=true;
                                        
                                         
                                         $scope.add_new_employee=function (){
@@ -1370,6 +1380,8 @@ and open the template in the editor.
                                             $scope.gridhide=false;
                                             $scope.btn_view=true;
                                             $scope.btn_add=false;
+                                            $scope.search1=false;
+                                           
                                                              $scope.user_id="";
                                                              $scope.first="";
                                                              $scope.last="";
@@ -1392,6 +1404,8 @@ and open the template in the editor.
                                             $scope.gridhide=true;
                                             $scope.btn_view=false;
                                             $scope.btn_add=true;
+                                            $scope.search1=true;
+                                           
                                            
                                         };
                                         
@@ -1400,6 +1414,9 @@ and open the template in the editor.
                                             $scope.gridhide=false;
                                             $scope.btn_view=true;
                                             $scope.btn_add=false;
+                                           $scope.search1=false;
+                                             
+                                            
                                             
                                            $.ajax({
                                                 type: 'POST',
