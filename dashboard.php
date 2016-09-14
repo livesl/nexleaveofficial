@@ -568,7 +568,41 @@ and open the template in the editor.
                             
                             
                         </div>
-                        <div class="col-sm-3">
+                    <div class="col-sm-3">
+                            <div  class="form-group"  >
+                            <label for="username">Month:</label> 
+                            <select class="form-control" id="month_name" name="month_name" ng-model="form.month_name" >
+                            <option value="" selected="">Select</option>
+                            <option value="January" >January</option>
+                            <option value="February" >February</option>
+                            <option value="March" >March</option>
+                            <option value="April" >April</option>
+                            <option value="May" >May</option>
+                            <option value="June" >June</option>
+                            <option value="July" >July</option>
+                            <option value="August" >August</option>
+                            <option value="September" >September</option>
+                            <option value="October" >October</option>
+                            <option value="November" >November</option>
+                            <option value="December" >December</option>
+                     
+                            </select>
+                           
+                            </div>
+                        
+                      
+                            
+                        </div>
+                     <div class="col-sm-3">
+                            
+                            <div class="form-group">
+                            <br>
+                            <input id="btn_find_payments" name="btn_find_payments_byMonth" type="submit" class="btn btn-primary" value="Find" ng-click="btn_find_payments_byMonth()" /><br>
+                            </div>
+                           
+                            
+                        </div>
+<!--                        <div class="col-sm-3">
                             <div class="form-group" >
                             <label for="username">Date(From):</label> 
                             <input type="text" class="form-control" id="datepickerfrompayments" name="datepickerfrompayments" placeholder="Click here" ng-model="form.datepickerfrompayments" >    
@@ -590,7 +624,7 @@ and open the template in the editor.
                             </div>
                            
                             
-                        </div>
+                        </div>-->
                     <!--////////code-->
                   
                 </div><br>
@@ -1468,43 +1502,67 @@ and open the template in the editor.
                                          
                                          
                                          ///////////////////////////////////////////////////////
-                                          $scope.form={employee_name:'',datepickerfrompayments:'',datepickertopayments:''};
-                                           $scope.loadPaymentsdata = function () {
-                                               
-                                           
-                                           $http({
-                                               method:'POST',
-                                               url:'php/view_payments_search.php',
-                                               data:{'employee_name':$("#employee_name").val(),'date_from_pay':$("#datepickerfrompayments").val(),'date_to_pay':$("#datepickertopayments").val()},
-//                                               data:{'employee_name':"ranjan",'date_from_pay':"2016-09-01",'date_to_pay':"2016-09-30"},
-                                               headers: {'Content-Type': 'application/x-www-form-urlencoded:charset=utf-8;'}
-                                             
-                                             
-                                               
-//                                           }).then(function successCallback(response){
+//                                          $scope.form={employee_name:'',datepickerfrompayments:'',datepickertopayments:''};
+//                                           $scope.loadPaymentsdata = function () {
+//                                               
+//                                           
+//                                           $http({
+//                                               method:'POST',
+//                                               url:'php/view_payments_search.php',
+//                                               data:{'employee_name':$("#employee_name").val(),'date_from_pay':$("#datepickerfrompayments").val(),'date_to_pay':$("#datepickertopayments").val()},
+////                                               data:{'employee_name':"ranjan",'date_from_pay':"2016-09-01",'date_to_pay':"2016-09-30"},
+//                                               headers: {'Content-Type': 'application/x-www-form-urlencoded:charset=utf-8;'}
+//                                             
+//                                             
+//                                             /////////////no need///////////////  
+////                                           }).then(function successCallback(response){
+////                                           $scope.views5 = response['data_set'];
+////                                           $scope.payment_total=response['total'];
+////                                           console.log(response);
+////                                               
+////                                           }
+////                                           ,function errorCallback(response) {
+////                                               alert(response);
+////                                               
+////                                            });
+//                                              ///////////////////////no need///////////////
+//                                              
+//                                                }).success(function (response){
 //                                           $scope.views5 = response['data_set'];
 //                                           $scope.payment_total=response['total'];
 //                                           console.log(response);
 //                                               
-//                                           }
-//                                           ,function errorCallback(response) {
-//                                               alert(response);
-//                                               
-//                                            });
-                                              
-                                              
-                                                }).success(function (response){
-                                           $scope.views5 = response['data_set'];
-                                           $scope.payment_total=response['total'];
-                                           console.log(response);
-                                               
-                                           });
-                                          
-                                         
-                                         };
-                                          
-//                                        $scope.loadPaymentsdata();
+//                                           });
+//                                          
+//                                         
+//                                         };
+//                                          
+////                                        $scope.loadPaymentsdata();
                                         ////////////////////////////////////
+                                         $scope.form={employee_name:'', month_name:''};
+//                                         $scope.form1={employee_name:$("#employee_name").val(), month_name:$("#month_name").val()};
+                                         //$scope.form={'employee_name':$scope.form.employee_name.name,'month_name':$scope.form.month_name};
+                                         
+                                       $scope.btn_find_payments_byMonth= function (){
+                                           
+                                           $http({
+                                               method:'POST',
+                                               url:'php/view_payments_search_by_month.php',
+//                                               data:$scope.form1,
+                                               data:{'employee_name':$("#employee_name").val(),'month_name':$("#month_name").val()},
+                                               headers: {'Content-Type': 'application/x-www-form-urlencoded:charset=utf-8;'}
+                                             
+                                                }).success(function (response){ 
+                                                    $scope.views5 = response['data_set'];
+                                                    $scope.payment_total=response['total'];        
+                                           });
+                                           
+                                       };
+                                        
+//                                         $scope.btn_find_payments_byMonth();
+                                        
+                                        
+                                        ///////////////////////////////////////////////////////////
                                         $scope.loadData = function () {
 
                                         $http.get("php/view_leaveapply_admin.php").success(function (response) {
