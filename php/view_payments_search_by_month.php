@@ -7,7 +7,6 @@ $data_back = json_decode(file_get_contents("php://input"));
 
 //print_r($data_back);
 $emp_name=$data_back->employee_name;
-
 $emp_month=$data_back->month_name;
 //$date_from=$_REQUEST['date_from_pay'];
 //$date_to=$_REQUEST['date_to_pay'];
